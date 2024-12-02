@@ -25,7 +25,6 @@ class BuildClass {
         if (!await this.isPathValid((dir))) {
             return
         }
-            console.log(dir)
         let texts = ""
         await walk(dir, async (err, pathname, dirent) => {
             if (err) {

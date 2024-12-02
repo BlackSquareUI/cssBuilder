@@ -1,6 +1,6 @@
 {
-  "name": "blacksquereui.cssbuilder",
-  "version": "1.0.0",
+  "name": "@blacksquereui/cssbuilder",
+  "version": "1.0.1",
   "main": "dist/app.js",
   "scripts": {
     "start": "tsc && node dist/app.js",
@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@root/walk": "^1.1.0",
-    "blacksquareui.themebuilder": "file:../ThemeBuilder",
+    "@blacksquareui/themebuilder": "1.0.0",
     "chokidar": "^4.0.1"
   },
   "devDependencies": {

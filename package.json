@@ -1,6 +1,6 @@
 {
   "name": "@blacksquareui/cssbuilder",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/app.js",
   "scripts": {
     "start": "tsc && node dist/app.js",
@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@root/walk": "^1.1.0",
-    "@blacksquareui/themebuilder": "1.0.0",
+    "@blacksquareui/themebuilder": "^1.0.0",
     "chokidar": "^4.0.1"
   },
   "devDependencies": {

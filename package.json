@@ -1,6 +1,6 @@
 {
   "name": "@blacksquareui/cssbuilder",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "dist/app.js",
   "scripts": {
     "start": "tsc && node dist/app.js",

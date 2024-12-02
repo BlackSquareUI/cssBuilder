@@ -80,7 +80,7 @@ class BuildClass {
         return classNames
     }
     createCSS = async () => {
-        const allTexts = await this.collectTextFromFiles([this.sourceDir, 'node_modules/@blacksquareui/themebuilder/lib/components'])
+        const allTexts = await this.collectTextFromFiles([this.sourceDir, 'node_modules/@blacksquareui/themebuilder/dist/lib/components'])
         const classNames = await this.collectClasses(allTexts)
         let styles = ""
 

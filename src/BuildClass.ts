@@ -1,6 +1,3 @@
-
-
-
 import { walk } from "@root/walk";
 import { readFile as rF, writeFile, readdir as rD } from 'node:fs';
 import { promisify } from "node:util"
@@ -8,20 +5,19 @@ const readFile = promisify(rF)
 const readDir = promisify(rD)
 
 class BuildClass {
-
     constructor(public sourceDir: string,
         public fileExtension: string,
         public props: any,
         public outputFile: string
     ) { }
+
     createCSSBundle = async () => {
         const css = await this.createCSS()
         writeFile(`${this.sourceDir}/${this.outputFile}`, css, (e) => {
             if (e) console.log(e)
         });
-
     }
-    readTextFromDir = async (dir) => {
+    readTextFromDir = async (dir: string) => {
         if (!await this.isPathValid((dir))) {
             return
         }
@@ -36,14 +32,14 @@ class BuildClass {
         })
         return texts
     }
-    collectTextFromFiles = async (sourceDir = []) =>
-        await Promise.all(
+    collectTextFromFiles = async (sourceDir = []): Promise<string> =>
+        (await Promise.all(
             sourceDir.map(async (sd) => {
                 return await this.readTextFromDir(sd)
             })
-        )
+        )).join("")
 
-    isPathValid = async (path) => {
+    isPathValid = async (path: string) => {
         try {
             await readDir(path);
             return true;
@@ -51,7 +47,7 @@ class BuildClass {
             return false;
         }
     }
-    collectClasses = async (text) => {
+    collectClasses = async (text: string) => {
 
         let classNames = []
         let classNameRegex = /className=(?:"([^"]+)"|'([^']+)'|\{([^}]+)\})/g;
@@ -79,7 +75,7 @@ class BuildClass {
         return classNames
     }
     createCSS = async () => {
-        const allTexts = await this.collectTextFromFiles([this.sourceDir, 'node_modules/@blacksquareui/themebuilder/dist/lib/components'])
+        const allTexts: string = await this.collectTextFromFiles([this.sourceDir, 'node_modules/@blacksquareui/themebuilder/dist/lib/components'])
         const classNames = await this.collectClasses(allTexts)
         let styles = ""
 

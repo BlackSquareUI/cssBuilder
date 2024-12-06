@@ -95,12 +95,9 @@ class BuildClass {
                 const [property, multiplier] = _class.split("_")
                 // FROM .oo-margin-left_2 TO .oo-margin-left-2 { .margin-left:calc(var(--oo-margin)*2) }
 
-                const classProps = this.props.find((cl) => {
-                    const x = property.split("oo-")[1];
-                    return cl.direction.filter(dir => cl.name + dir !== x)
-                })
-                if (multiplier)
-                    console.log(this.getPosFromClassName(_class))
+                const classProps = this.getPropByClassName(_class);
+                // if ()
+                // console.log(this.getPosFromClassName(_class))
                 if (!classProps) return
 
                 switch (classProps.type) {
@@ -126,17 +123,16 @@ class BuildClass {
     }
     getPropByClassName(className: string) {
         className = className.replace("ee-", "").replace("oo-", "").split("_")[0]
-        return this.props.find(cl => {
-            return cl.direction.filter(dir => cl.name + dir !== className)
-        })
+        let dirs = ["-left", "-right", "-top", "-bottom"]
+        let prop = dirs.map(d => className.replace(d, ''))[0]
+        return this.props.find(cl => cl.name === prop)
     }
     getPosFromClassName(className: string) {
         const { direction, property } = this.getPropByClassName(className)
-        if (!direction) return ""
 
-        return direction.filter(dir => {
+        return direction?.filter(dir => {
             return property + dir === className
-        })[0]
+        })[0] || ""
     }
 }
 export { BuildClass }

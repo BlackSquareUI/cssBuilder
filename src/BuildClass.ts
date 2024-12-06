@@ -82,25 +82,39 @@ class BuildClass {
         styles += ":root{"
 
         classNames.filter(c => c.includes("oo")).map(_class => {
-
             const classProps = this.props.find((cl) => cl.name === _class.split("oo-")[1])
-            if (classProps)
-                switch (classProps.type) {
-                    case "range":
-                        styles += `--${_class}: ${classProps.val}rem;`
-                        break
-                    case "color":
-                        styles += `--${_class}: ${classProps.val};`
-                        break
-                }
+            if (classProps) {
+                styles += `--${_class}: ${classProps.val}${classProps.type == "range" ? "rem" : ""};`
+            }
         })
         styles += "}"
 
-        classNames.filter(c => c.includes("oo")).map(_class => {
-            const classProps = this.props.find((cl) => cl.name === _class.split("oo-")[1])
-            if (classProps)
-                styles += `.${_class} { ${classProps.property}:var(--${_class});}`
-        })
+        classNames
+            .filter(c => c.includes("oo"))
+            .map(_class => {
+                const [property, multiplier] = _class.split("_")
+                // FROM .oo-margin-left_2 TO .oo-margin-left-2 { .margin-left:calc(var(--oo-margin)*2) }
+
+                const classProps = this.props.find((cl) => {
+                    const x = property.split("oo-")[1];
+                    return cl.direction.filter(dir => cl.name + dir !== x)
+                })
+                if (multiplier)
+                    console.log(this.getPosFromClassName(_class))
+                if (!classProps) return
+
+                switch (classProps.type) {
+                    case "range":
+                        classProps.direction.map(pos => {
+                            styles += `.${property}${pos}${multiplier ? `_${multiplier}` : ""} {${classProps.property}${this.getPosFromClassName(property)}:calc(var(--oo-${this.getPropByClassName(property).name})${multiplier ? ` * ${multiplier}` : ""});}`
+                        })
+                        break;
+                    case "color":
+                        styles += `.${property} { ${classProps.property}:var(--${property});}`
+                        break;
+                }
+            })
+
         classNames.filter(c => c.includes("ee")).map(_class => {
 
             if (_class.includes("_")) {
@@ -110,6 +124,19 @@ class BuildClass {
         })
         return styles
     }
+    getPropByClassName(className: string) {
+        className = className.replace("ee-", "").replace("oo-", "").split("_")[0]
+        return this.props.find(cl => {
+            return cl.direction.filter(dir => cl.name + dir !== className)
+        })
+    }
+    getPosFromClassName(className: string) {
+        const { direction, property } = this.getPropByClassName(className)
+        if (!direction) return ""
 
+        return direction.filter(dir => {
+            return property + dir === className
+        })[0]
+    }
 }
 export { BuildClass }

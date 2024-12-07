@@ -93,18 +93,13 @@ class BuildClass {
             .filter(c => c.includes("oo"))
             .map(_class => {
                 const [property, multiplier] = _class.split("_")
-                // FROM .oo-margin-left_2 TO .oo-margin-left-2 { .margin-left:calc(var(--oo-margin)*2) }
-
                 const classProps = this.getPropByClassName(_class);
-                // if ()
-                // console.log(this.getPosFromClassName(_class))
+
                 if (!classProps) return
 
                 switch (classProps.type) {
                     case "range":
-                        classProps.direction.map(pos => {
-                            styles += `.${property}${pos}${multiplier ? `_${multiplier}` : ""} {${classProps.property}${this.getPosFromClassName(property)}:calc(var(--oo-${this.getPropByClassName(property).name})${multiplier ? ` * ${multiplier}` : ""});}`
-                        })
+                        styles += `.${_class} {${classProps.property}${this.getPosFromClassName(property)}:calc(var(--oo-${this.getPropByClassName(property).name})${multiplier ? ` * ${multiplier}` : ""});}`
                         break;
                     case "color":
                         styles += `.${property} { ${classProps.property}:var(--${property});}`
@@ -113,7 +108,6 @@ class BuildClass {
             })
 
         classNames.filter(c => c.includes("ee")).map(_class => {
-
             if (_class.includes("_")) {
                 let [_name, _prop] = _class.split("_")
                 styles += `.${_class}{${_name.split("ee-")[1]}:${parseInt(_prop) ? _prop + "rem" : _prop}}`
@@ -123,13 +117,20 @@ class BuildClass {
     }
     getPropByClassName(className: string) {
         className = className.replace("ee-", "").replace("oo-", "").split("_")[0]
-        let dirs = ["-left", "-right", "-top", "-bottom"]
-        let prop = dirs.map(d => className.replace(d, ''))[0]
+        let prop = "";
+        ["-left", "-right", "-top", "-bottom"].map(d => {
+            if (className.includes(d))
+                prop = className.replace(d, '')
+        })
+        if(!prop) prop = className
         return this.props.find(cl => cl.name === prop)
     }
     getPosFromClassName(className: string) {
+        className = className.replace("oo-", "").replace("ee-", "")
         const { direction, property } = this.getPropByClassName(className)
-
+        if (className === "oo-padding-top") {
+            console.log(direction, property)
+        }
         return direction?.filter(dir => {
             return property + dir === className
         })[0] || ""

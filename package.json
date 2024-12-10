@@ -1,6 +1,6 @@
 {
   "name": "@blacksquareui/cssbuilder",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/app.js",
   "scripts": {
     "test": "jest",
@@ -16,6 +16,7 @@
     "url": "git+https://github.com/BlackSquareUI/cssBuilder"
   },
   "description": "This is a package for creating css file from classes",
+  "keywords": ["BlackSquareUI","CSS","REACT","VITE","CSS framework"],
   "dependencies": {
   },
   "devDependencies": {

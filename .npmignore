@@ -1,3 +1,7 @@
 __tests__
 src
 coverage
+tsconfig.json
+jest.config.js
+eslint.config.js
+.github/

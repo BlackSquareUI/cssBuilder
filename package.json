@@ -1,6 +1,6 @@
 {
   "name": "@blacksquareui/cssbuilder",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/app.js",
   "scripts": {
     "test": "jest",
@@ -17,8 +17,6 @@
   },
   "description": "This is a package for creating css file from classes",
   "dependencies": {
-    "@root/walk": "^1.1.0",
-    "chokidar": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

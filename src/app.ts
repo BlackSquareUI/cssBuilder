@@ -1,12 +1,5 @@
-import { ConfigClass } from "./ConfigClass";
-import { BuildClass } from "./BuildClass";
+/* istanbul ignore file */
+import { getBuildConfig } from "./configReader";
+import { createCSSBundle } from "./styleProcessor";
 
-const { getBuildConfig, getProps } = new ConfigClass();
-
-const build = async ({ sourceDir, fileExtension, outputFile }) => {
-    const buildClass = new BuildClass(sourceDir, fileExtension, await getProps(), outputFile)
-    await buildClass.createCSSBundle()
-}
-
-
-export { build, getBuildConfig }
+export { createCSSBundle, getBuildConfig }

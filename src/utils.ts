@@ -1,0 +1,1 @@
+export const arrCount = (arr: Array<any>) => arr.length
